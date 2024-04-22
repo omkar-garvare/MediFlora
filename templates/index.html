@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Recognition and Description</title>
+    <!-- Add Bootstrap CSS link -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            background-image: url('https://images.unsplash.com/photo-1609486961058-cbfe79e35cbf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-color: #f0f0f0;
+            background-position: center center;
+        }
+
+        .container {
+            margin-top: 5rem;
+        }
+
+        .heading {
+            color: #007bff;
+        }
+
+        .btn-bubble {
+            color: blue;
+            background-color: #00ff00;
+            background-repeat: no-repeat;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 12px 24px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-bubble:hover,
+        .btn-bubble:focus {
+            animation: bubbles 1s forwards ease-out;
+            background-color: #ccff99;
+        }
+
+        #camera-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        #video-feed {
+            width: 80%;
+            height: auto;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        @keyframes blink {
+            0% {
+                color: #007bff; /* Initial color (blue) */
+            }
+            50% {
+                color: #ff0000; /* Midpoint color (red) */
+            }
+            100% {
+                color: #66ffff; /* Final color (blue) */
+            }
+        }
+
+        .blinking {
+            animation: blink 2s infinite;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+            <!-- Add the "blinking" class to the title -->
+            <h1 class="mb-4 heading blinking">Plant Recognition and Description</h1>
+
+            <div id="camera-container">
+                <video id="video-feed" autoplay playsinline muted></video>
+                <button id="capture-image-button" class="btn btn-bubble" data-capture="camera">
+                    <i class="fas fa-camera" style="color: #ff0066;"></i> Capture Image
+                </button>
+                <button id="voice-command-button" class="btn btn-bubble">
+                    <i class="fas fa-microphone" style="color: #ff0066;"></i> Voice Command
+                </button>
+                <div class="plant-info">
+                   <h4><b>Predicted Plant With its Description:</b></h4>
+                   <p id="predicted-plant">Waiting for prediction...</p>
+                   <p id="plant-description"></p>
+                </div>
+
+
+            </div>
+            <div class="mt-4">
+                <div id="result-label" class="alert alert-info" role="alert"></div>
+                <div id="description-label" class="alert alert-success" role="alert"></div>
+            </div>
+            <input type="file" id="image-upload" accept="image/*">
+            <button id="predict-image-button" class="btn btn-bubble">
+                  <i class="fas fa-camera" style="color: #ff0066;"></i> Predict Image
+                </button>
+            <div class="mt-4">
+                <audio controls id="audio-player">
+                    <source src="" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+const imageUpload = document.getElementById("image-upload");
+const predictImageButton = document.getElementById("predict-image-button");
+
+// Event listener for image upload
+imageUpload.addEventListener("change", function () {
+    const file = imageUpload.files[0];
+    if (file) {
+        // Display the selected image (optional)
+        const imagePreview = document.getElementById("image-preview");
+        imagePreview.src = URL.createObjectURL(file);
+    }
+});
+
+ predictImageButton.addEventListener("click", function () {
+        const file = imageUpload.files[0];
+        if (file) {
+            // Send the image file to the server for prediction
+            const formData = new FormData();
+            formData.append("image", file);
+
+            fetch("/predict_image", {
+                method: "POST",
+                body: formData,
+            })
+                .then(function (response) {
+                    if (response.ok) {
+                        response.json().then(function (data) {
+                            const result = data.predicted_plant;
+                            predictedPlant.textContent = `Predicted Plant: ${result}`;
+                            // Display the plant description
+                            plantDescription.textContent = `Description: ${data.description}`;
+                            // Speak the description
+                            speakDescription(data.description);
+                        });
+                    } else {
+                        console.error("Image prediction request failed.");
+                    }
+                })
+                .catch(function (error) {
+                    console.error("Error sending image prediction request:", error);
+                });
+        }
+    });
+
+    // Function to speak the description
+    function speakDescription(description) {
+        if ('speechSynthesis' in window) {
+            const synth = window.speechSynthesis;
+            const descriptionUtterance = new SpeechSynthesisUtterance(description);
+            synth.speak(descriptionUtterance);
+        } else {
+            console.error("Speech synthesis not supported in this browser.");
+        }
+    }
+
+
+    const videoFeed = document.getElementById("video-feed");
+const captureButton = document.getElementById("capture-image-button");
+const predictedPlant = document.getElementById("predicted-plant");
+const plantDescription = document.getElementById("plant-description");
+const voiceCommandButton = document.getElementById("voice-command-button");
+
+// Access the user's camera
+navigator.mediaDevices
+    .getUserMedia({ video: true })
+    .then(function (stream) {
+        videoFeed.srcObject = stream;
+    })
+    .catch(function (error) {
+        console.error("Error accessing the camera:", error);
+    });
+
+// Capture an image
+captureButton.addEventListener("click", function () {
+    captureImage();
+});
+
+function captureImage() {
+    // Send a request to the server to capture an image
+    fetch("/capture_image", { method: "POST" })
+        .then(function (response) {
+            if (response.ok) {
+                console.log("Image capture request sent.");
+                return response.json();
+            } else {
+                console.error("Image capture request failed.");
+            }
+        })
+        .then(function (data) {
+            // Update the predicted plant on the UI
+            predictedPlant.textContent = "Predicted Plant: " + data.predicted_plant;
+        })
+        .catch(function (error) {
+            console.error("Error sending image capture request:", error);
+        });
+}
+
+// Handle voice command
+voiceCommandButton.addEventListener("click", function () {
+ predictedPlant.textContent = "Listening...";
+    recognizeVoiceCommand();
+});
+
+function recognizeVoiceCommand() {
+    // Send a request to the server to process a voice command
+    fetch("/voice_command", { method: "POST" })
+        .then(function (response) {
+            if (response.ok) {
+                return response.json();
+            } else {
+                console.error("Voice command request failed.");
+            }
+        })
+        .then(function (data) {
+            const result = data.voice_command_result;
+            // Update the predicted plant and description on the UI
+            predictedPlant.textContent = result;
+            plantDescription.textContent = "";
+            if (data.tts_audio_url) {
+                playAudio(data.tts_audio_url);
+            }
+        })
+        .catch(function (error) {
+            console.error("Error sending voice command request:", error);
+        });
+}
+
+// Play audio from the given URL
+function playAudio(audioUrl) {
+    const audio = new Audio(audioUrl);
+    audio.play();
+}
+</script>
+</body>
+</html>
