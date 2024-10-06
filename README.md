@@ -1,73 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mediflora - Ayurvedic Medicinal Plant Identifier</title>
-</head>
-<body>
+# Project Mediflora Web App
+Team mediflora noticed that the knowledge among the general public about ayurvedic medicinal plants is less nowadays and because of that the indigenous medicinal system has been neglected. The main reason was, there wasn't any easy way to identify ayurvedic medicinal plants by the general public. So Mediflora web based application is introduced to solve the above problem where team mediflora has developed an automated system to identify ayurvedic medicinal plants by scanning the leaves of that plant and gives its respective medicinal properties.
 
-    <!-- Header Section -->
-    <header>
-        <h1>Mediflora - Ayurvedic Medicinal Plant Identifier</h1>
-        <p>An automated system to identify Ayurvedic medicinal plants by scanning their leaves.</p>
-    </header>
+# Demo
+https://mediflora-medicinal-plant-identifier.onrender.com
 
-    <!-- Navigation Bar -->
-    <nav>
-        <ul>
-            <li><a href="#demo">Demo</a></li>
-            <li><a href="#features">Features</a></li>
-            <li><a href="#quiz">Quiz</a></li>
-        </ul>
-    </nav>
+# Technology Stack
+Front-End: HTML, CSS
+Deep Learning: Python , PyTorch
+Version Controllers: Github
+IDEs: Visual Studio Code, Pycharm
+Google tensorflow : (https://www.tensorflow.org/)
 
-    <!-- Demo Section -->
-    <section id="demo">
-        <h2>Identify Medicinal Plants</h2>
-        <p>Use the camera to scan a plant leaf, and the system will identify its medicinal properties.</p>
-        <button>Scan Leaf</button>
-    </section>
-
-    <!-- Features Section -->
-    <section id="features">
-        <h2>Features</h2>
-        <ul>
-            <li>Identify medicinal plants by scanning leaves.</li>
-            <li>Suggest plants with similar medicinal properties.</li>
-            <li>Voice command recognition for plant identification.</li>
-            <li>Audio description of medicinal plant properties.</li>
-            <li>Supports multiple languages (global and Indian local languages).</li>
-        </ul>
-    </section>
-
-    <!-- Voice Command Section -->
-    <section id="voice-command">
-        <h2>Voice Command Identification</h2>
-        <p>Identify plants by giving voice commands.</p>
-        <button>Start Voice Command</button>
-    </section>
-
-    <!-- Medicinal Plant Suggestions Section -->
-    <section id="suggestions">
-        <h2>Plant Suggestions</h2>
-        <p>Here are plants with similar medicinal properties:</p>
-        <ul>
-            <!-- Dynamic suggestions go here -->
-        </ul>
-    </section>
-
-    <!-- Quiz Section -->
-    <section id="quiz">
-        <h2>Interactive Quiz</h2>
-        <p>Test your knowledge about Ayurvedic medicinal plants!</p>
-        <button>Start Quiz</button>
-    </section>
-
-    <!-- Footer Section -->
-    <footer>
-        <p>&copy; 2024 Mediflora Team. All rights reserved.</p>
-    </footer>
-
-</body>
-</html>
+# Features of the prototype
+1. Identify medical plants using a leaf.
+   Mediflora App will use the camera and identify ayurvedic plants by scanning its leaf. Then the user can get relevant information regarding the plant.
+2. Suggesting other plants with similar qualities.
+ After the identification process of the plant, mediflora application will suggest plants to the user with similar qualities. So, the user can compare those plants by considering suggestions.
+3. Users can identify the medicinal plants by giving Voice Commands.
+ When users give the voice command the application will identify the medicinal plants similar to given voice words it is doing using fuzzywuzzy library.
+4. The web application can read the predicted plant and read its medicinal properties description for the user.
+ Users can get major information on ayurvedic plants in global language and a local language in India.
