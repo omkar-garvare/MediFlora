@@ -105,7 +105,8 @@ Future enhancements for the project could include:
 
 The system architecture of the medicinal plant detection system is illustrated below:
 
-![System Architecture](images/system_architecture.png)
+![system_architecture](https://github.com/user-attachments/assets/bd00d323-4770-4dc8-b252-8effdd7e2469)
+
 
 The architecture consists of the following key components:
 - **Off-line Training and Testing**: This component is responsible for training deep learning models using plant leaf image datasets. Images are pre-processed before training.
@@ -117,8 +118,9 @@ The architecture consists of the following key components:
 
 The following image showcases the implementation of the plant detection system, where users can upload plant images for recognition:
 
-![Plant Detection Implementation](images/imagesplant_detection_implementation1.png)
-![Plant Detection Implementation](images/imagesplant_detection_implementation2.png)
+![imagesplant_detection_implementation1](https://github.com/user-attachments/assets/8f04432d-71fa-42ce-9676-ed5987651693)
+![imagesplant_detection_implementation2](https://github.com/user-attachments/assets/4bc94473-d856-412e-8f49-4150eeaa5e12)
+
 
 The system allows users to:
 - Select images from the local machine or mobile device.
